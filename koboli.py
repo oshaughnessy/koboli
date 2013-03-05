@@ -733,9 +733,19 @@ def validate_config(config):
 def main():
     """Do the needful.
     """
-    config = ConfigObj('/etc/koboli/koboli.ini',
-                       configspec='/etc/koboli/kobolispec.ini',
-                       list_values=True)
+    try:
+	config = ConfigObj('/etc/koboli/koboli.ini',
+			   configspec='/etc/koboli/kobolispec.ini',
+			   list_values=True)
+    except IOError, ex:
+	try:
+	    config = ConfigObj('/usr/local/etc/koboli/koboli.ini',
+			       configspec='/usr/local/etc/koboli/kobolispec.ini',
+			       list_values=True)
+	except IOError, ex:
+	    log.critical("Failure: couldn't open koboli configs in " +
+	                 "/etc/koboli or /usr/local/etc/koboli")
+	    sys.exit(1)
 
     try:
         validate_config(config)
