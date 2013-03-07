@@ -62,13 +62,14 @@ Usage
 =====
 The following commands are baked into the initial release:
 
-- `#acknowledge [comment]`: Acknowledge the alert.
-- `#comment`: Add a comment in Nagios.
+- `#acknowledge [comment]`: Acknowledge the alert.  (Shortcut: `#ack`.)
+- `#comment`: Add a comment in Nagios.  (Shortcut: `#com`.)
 - `#create-issue [description]`: Create a JIRA issue. The full text of the
   original alert will be included in the issue description.
 - `#disable-notifications`: Disable notifications for the host or service in
-  Nagios.
-- `#enable-notifications`: Enable notifications for the host or service in Nagios.
+  Nagios.  (Shortcut: `#dn`.)
+- `#enable-notifications`: Enable notifications for the host or service in
+  Nagios.  (Shortcut: `#en`.)
 
 
 Bundled Command Processors
