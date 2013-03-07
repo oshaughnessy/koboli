@@ -58,7 +58,7 @@ class BufferingSMTPHandler(logging.handlers.BufferingHandler):
                 smtp = smtplib.SMTP(self.mailhost, port)
                 fmt = "From: {fromaddr}\r\nTo: {toaddrs}\r\nSubject: {subject}\r\n\r\n{content}"
                 msg = fmt.format(
-			fromaddr=self.fromaddr,
+                        fromaddr=self.fromaddr,
                         toaddrs=self._join_addrs(self.toaddrs),
                         subject=self.subject,
                         content="\r\n".join(self.format(r) for r in self.buffer))
@@ -273,13 +273,18 @@ class NagiosCommandProcessor(CommandProcessor):
     the appropriate Nagios commands into the Nagios command file.
 
     """
+
     def __init__(self, config, event_data):
-        self.handled_commands = {'acknowledge': self._acknowledge_handler,
-                                 'comment': self._comment_handler,
-                                 'disable-notifications':
-                                     self._disable_notifications_handler,
-                                 'enable-notifications':
-                                     self._enable_notifications_handler}
+        self.handled_commands = {
+            'acknowledge':           self._acknowledge_handler,
+            'ack':                   self._acknowledge_handler,
+            'comment':               self._comment_handler,
+            'com':                   self._comment_handler,
+            'disable-notifications': self._disable_notifications_handler,
+            'dn':                    self._disable_notifications_handler,
+            'enable-notifications':  self._enable_notifications_handler,
+            'en':                    self._enable_notifications_handler,
+        }
 
         self.cf_type_map = {'host': 'HOST', 'service': 'SVC'}
         self.fh = None
@@ -734,18 +739,18 @@ def main():
     """Do the needful.
     """
     try:
-	config = ConfigObj('/etc/koboli/koboli.ini',
-			   configspec='/etc/koboli/kobolispec.ini',
-			   list_values=True)
+        config = ConfigObj('/etc/koboli/koboli.ini',
+                           configspec='/etc/koboli/kobolispec.ini',
+                           list_values=True)
     except IOError, ex:
-	try:
-	    config = ConfigObj('/usr/local/etc/koboli/koboli.ini',
-			       configspec='/usr/local/etc/koboli/kobolispec.ini',
-			       list_values=True)
-	except IOError, ex:
-	    log.critical("Failure: couldn't open koboli configs in " +
-	                 "/etc/koboli or /usr/local/etc/koboli")
-	    sys.exit(1)
+        try:
+            config = ConfigObj('/usr/local/etc/koboli/koboli.ini',
+                               configspec='/usr/local/etc/koboli/kobolispec.ini',
+                               list_values=True)
+        except IOError, ex:
+            log.critical("Failure: couldn't open koboli configs in " +
+                         "/etc/koboli or /usr/local/etc/koboli")
+            sys.exit(1)
 
     try:
         validate_config(config)
